@@ -25,7 +25,7 @@ module.exports = {
     if (filePermissions) {
       fileOptions.mode = filePermissions
     }
-    await fs.ensureDir(path.dirname(dest), '0755')
+    await fs.ensureDir(path.dirname(dest), 0o755)
     const data = await generateTemplate(templatePath, options)
     return fs.outputFile(dest, data, fileOptions)
   },

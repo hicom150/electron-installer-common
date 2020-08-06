@@ -77,7 +77,7 @@ class ElectronInstaller {
     debug(`Copying application to ${this.stagingAppDir}`)
 
     return error.wrapError('copying application directory', async () => {
-      await fs.ensureDir(this.stagingAppDir, '0755')
+      await fs.ensureDir(this.stagingAppDir, 0o755)
       return fs.copy(this.sourceDir, this.stagingAppDir, { filter: ignoreFunc })
     })
   }
@@ -104,9 +104,9 @@ class ElectronInstaller {
     if (!await fs.pathExists(src)) {
       throw new Error(`The icon "${src}" does not exist`)
     }
-    await fs.ensureDir(path.dirname(dest), '0755')
+    await fs.ensureDir(path.dirname(dest), 0o755)
     await fs.copy(src, dest)
-    return fs.chmod(dest, '0644')
+    return fs.chmod(dest, 0o644)
   }
 
   /**
@@ -153,7 +153,7 @@ class ElectronInstaller {
       if (!await fs.pathExists(bundledBin)) {
         throw new Error(`could not find the Electron app binary at "${bundledBin}". You may need to re-bundle the app using Electron Packager's "executableName" option.`)
       }
-      await fs.ensureDir(path.dirname(binDest), '0755')
+      await fs.ensureDir(path.dirname(binDest), 0o755)
       return fs.symlink(binSrc, binDest, 'file')
     })
   }
@@ -176,9 +176,9 @@ class ElectronInstaller {
     debug(`Creating copyright file at ${copyrightFile}`)
 
     return error.wrapError('creating copyright file', async () => {
-      await fs.ensureDir(path.dirname(copyrightFile), '0755')
+      await fs.ensureDir(path.dirname(copyrightFile), 0o755)
       await this.copyLicense(copyrightFile)
-      await fs.chmod(copyrightFile, '0644')
+      await fs.chmod(copyrightFile, 0o644)
     })
   }
 
@@ -202,7 +202,7 @@ class ElectronInstaller {
     return error.wrapError('creating staging directory', async () => {
       const dir = await tmp.dir({ prefix: 'electron-installer-', unsafeCleanup: true })
       this.stagingDir = path.join(dir.path, `${this.appIdentifier}_${this.options.version}_${this.options.arch}`)
-      return fs.ensureDir(this.stagingDir, '0755')
+      return fs.ensureDir(this.stagingDir, 0o755)
     })
   }
 
